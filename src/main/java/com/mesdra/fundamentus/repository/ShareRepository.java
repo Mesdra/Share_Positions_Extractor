@@ -19,6 +19,7 @@ public class ShareRepository {
 
         Properties conf = PropertiesLoader.loadProperties();
         String testMode = conf.getProperty("test.mode");
+        testMode = testMode.trim();
 
         org.jsoup.nodes.Document doc = null;
         if (testMode.equals("1")) {

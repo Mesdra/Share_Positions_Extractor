@@ -24,7 +24,7 @@
             <groupId>commons-configuration</groupId>
             <artifactId>commons-configuration</artifactId>
             <version>1.6</version>
-          </dependency>
+        </dependency>
     </dependencies>
 
     <properties>
@@ -33,11 +33,40 @@
     </properties>
 
     <build>
+        <finalName>share_positions_extractor</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                          <mainClass>com.mesdra.fundamentus.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                          <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+              </plugin>
+          </plugins>
         <resources>
             <resource>
-              <directory>src/main/resources</directory>
+                <directory>src/main/resources</directory>
             </resource>
-          </resources>
+        </resources>
     </build>
+
+    
+   
 
 </project>
