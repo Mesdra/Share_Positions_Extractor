@@ -23,7 +23,7 @@ public class ShareRepository {
 
         org.jsoup.nodes.Document doc = null;
         if (testMode.equals("1")) {
-            String path = "src/main/resources/test.html";
+            String path = "test.html";
             File file = new File(path);
             doc = Jsoup.parse(file, "ISO-8859-1");
         } else {
