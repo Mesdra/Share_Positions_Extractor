@@ -19,11 +19,12 @@ public class ShareRepository {
 
         Properties conf = PropertiesLoader.loadProperties();
         String testMode = conf.getProperty("test.mode");
+        String fileDir = conf.getProperty("test.file.dir");
         testMode = testMode.trim();
 
         org.jsoup.nodes.Document doc = null;
         if (testMode.equals("1")) {
-            String path = "test.html";
+            String path = fileDir + "test.html";
             File file = new File(path);
             doc = Jsoup.parse(file, "ISO-8859-1");
         } else {

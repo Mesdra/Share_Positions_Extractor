@@ -1,0 +1,1 @@
+* * * * * /usr/local/openjdk-17/bin/java -jar /app/runner.jar >> /var/log/cron.log 2>&1 
