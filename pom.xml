@@ -25,6 +25,26 @@
             <artifactId>commons-configuration</artifactId>
             <version>1.6</version>
         </dependency>
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-high-level-client</artifactId>
+            <version>7.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-client</artifactId>
+            <version>7.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>7.9.2</version><!--$NO-MVN-MAN-VER$-->
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.11.1</version>
+        </dependency>
     </dependencies>
 
     <properties>
@@ -44,7 +64,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                          <mainClass>com.mesdra.fundamentus.Main</mainClass>
+                            <mainClass>com.mesdra.fundamentus.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -53,12 +73,12 @@
                         <id>make-assembly</id>
                         <phase>package</phase>
                         <goals>
-                          <goal>single</goal>
+                            <goal>single</goal>
                         </goals>
                     </execution>
                 </executions>
-              </plugin>
-          </plugins>
+            </plugin>
+        </plugins>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -66,7 +86,5 @@
         </resources>
     </build>
 
-    
-   
 
 </project>
