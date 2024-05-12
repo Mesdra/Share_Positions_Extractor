@@ -1,5 +1,0 @@
-com\mesdra\fundamentus\model\SharePosition.class
-com\mesdra\fundamentus\Main.class
-com\mesdra\fundamentus\config\PropertiesLoader.class
-com\mesdra\fundamentus\repository\ShareRepository.class
-com\mesdra\fundamentus\service\ExtractDataService.class
