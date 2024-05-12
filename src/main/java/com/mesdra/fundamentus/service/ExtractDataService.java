@@ -9,14 +9,15 @@ import com.mesdra.fundamentus.model.SharePosition;
 import com.mesdra.fundamentus.repository.ElasticRepository;
 import com.mesdra.fundamentus.repository.ShareRepository;
 
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
-@Log4j2
+@Slf4j
 public class ExtractDataService {
 
     public void extract() throws IOException {
         ShareRepository repoShare = new ShareRepository();
         ElasticRepository repoElastic = new ElasticRepository();
+
         try {
             log.info("Start Extraction");
             List<SharePosition> shareList = repoShare.getList();
