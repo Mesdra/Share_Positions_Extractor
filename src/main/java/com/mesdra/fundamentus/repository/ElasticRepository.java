@@ -21,23 +21,25 @@ import com.mesdra.fundamentus.model.SharePosition;
 public class ElasticRepository {
 
     public void save(List<SharePosition> positions) throws PropertiesException {
+        try {
+            RestHighLevelClient client = createClient();
 
-        RestHighLevelClient client = createClient();
+            for (SharePosition sharePosition : positions) {
 
-        for (SharePosition sharePosition : positions) {
-            try {
-            IndexRequest indexRequest = new IndexRequest("sharePosition");
-            indexRequest.source(new ObjectMapper().writeValueAsString(sharePosition), XContentType.JSON);
-            IndexResponse indexResponse = client.index(indexRequest, RequestOptions.DEFAULT);
-            System.out.println("response id: "+indexResponse.getId());
-            System.out.println("response name: "+indexResponse.getResult().name());
+                IndexRequest indexRequest = new IndexRequest("shareposition");
+                indexRequest.source(new ObjectMapper().writeValueAsString(sharePosition), XContentType.JSON);
+                IndexResponse indexResponse = client.index(indexRequest, RequestOptions.DEFAULT);
+                System.out.println("response id: " + indexResponse.getId());
+                System.out.println("response name: " + indexResponse.getResult().name());
+
+            }
+            client.close();
         } catch (JsonProcessingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
         }
 
     }

@@ -23,7 +23,6 @@ public class ExtractDataService {
             List<SharePosition> shareList = repoShare.getList();
             if (!shareList.isEmpty()) {
                 log.info("Inserting the list of {} elements in database", shareList.size());
-                System.out.println(shareList.toString());
                 repoElastic.save(shareList);
                 log.info("Data saved with success, finished process", shareList.size());
             } else {

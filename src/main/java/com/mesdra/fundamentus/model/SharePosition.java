@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
+import java.time.LocalDateTime;
 
 import org.jsoup.select.Elements;
 
@@ -35,6 +36,7 @@ public class SharePosition {
     private BigDecimal patrimLiq;
     private BigDecimal divBrutPatrim;
     private Float cresRec5a;
+    private LocalDateTime requestDate;
 
     public SharePosition(Elements columns) {
         columns.get(0).text();
@@ -59,6 +61,7 @@ public class SharePosition {
         this.patrimLiq = parseBigDecimal(columns.get(18).text());
         this.divBrutPatrim = parseBigDecimal(columns.get(19).text());
         this.cresRec5a = parseFloat(columns.get(20).text());
+        this.requestDate = LocalDateTime.now();
 
     }
 
