@@ -6,13 +6,11 @@ import java.util.Properties;
 
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mesdra.fundamentus.config.PropertiesLoader;
 import com.mesdra.fundamentus.exception.PropertiesException;
@@ -27,19 +25,14 @@ public class ElasticRepository {
             for (SharePosition sharePosition : positions) {
 
                 IndexRequest indexRequest = new IndexRequest("shareposition");
-                indexRequest.source(new ObjectMapper().writeValueAsString(sharePosition), XContentType.JSON);
-                IndexResponse indexResponse = client.index(indexRequest, RequestOptions.DEFAULT);
-                System.out.println("response id: " + indexResponse.getId());
-                System.out.println("response name: " + indexResponse.getResult().name());
+                indexRequest.source(new ObjectMapper().writeValueAsString(sharePosition),
+                        XContentType.JSON);
+                client.index(indexRequest, RequestOptions.DEFAULT);
 
             }
             client.close();
-        } catch (JsonProcessingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new PropertiesException("Erro inserir mensagem " + e.getMessage(), "");
         }
 
     }
