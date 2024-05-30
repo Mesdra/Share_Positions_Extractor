@@ -24,6 +24,7 @@ services:
       environment:
         - ELASTICSEARCH_URL="http://elasticsearch:9200"
         - ELASTICSEARCH_PASSWORD=${ELASTIC_PASS}
+        - ELASTICSEARCH_USERNAME=elastic
         - xpack.security.enabled=true
       depends_on:
         - elasticsearch
