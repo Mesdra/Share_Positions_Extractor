@@ -13,6 +13,9 @@ import com.mesdra.fundamentus.exception.DataException;
 import com.mesdra.fundamentus.exception.PropertiesException;
 import com.mesdra.fundamentus.model.SharePosition;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ShareRepository {
 
     public List<SharePosition> getList() throws PropertiesException,DataException {
@@ -27,11 +30,13 @@ public class ShareRepository {
 
             org.jsoup.nodes.Document doc = null;
             if (testMode.equals("1")) {
+                log.info("Test Mode ON");
                 String path = fileDir + "test.html";
                 File file = new File(path);
                 doc = Jsoup.parse(file, "ISO-8859-1");
             } else {
                 String url = conf.getProperty("site.url");
+                log.info("Get data from site {}", url);
                 doc = Jsoup.connect(url).post();
             }
 
