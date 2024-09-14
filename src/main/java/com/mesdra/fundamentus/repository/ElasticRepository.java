@@ -49,7 +49,7 @@ public class ElasticRepository {
         String host = conf.getProperty("elastic.host");
         String port = conf.getProperty("elastic.port");
         String user = conf.getProperty("elastic.user");
-        String pass = conf.getProperty("elastic.pass");
+        String pass = System.getenv("ELASTIC_PASSWORD");
 
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(AuthScope.ANY,

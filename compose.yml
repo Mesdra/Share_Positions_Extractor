@@ -34,6 +34,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: extractor_job
+    environment:
+      - ELASTIC_PASSWORD=${ELASTIC_PASS}
     restart: always
     depends_on:
       - elasticsearch

@@ -20,6 +20,7 @@ public class PropertiesLoader {
           .getResourceAsStream(FILE_NAME);
       configuration.load(inputStream);
       inputStream.close();
+
       return configuration;
     } catch (IOException e) {
       throw new PropertiesException(e.getMessage(), FILE_NAME);
