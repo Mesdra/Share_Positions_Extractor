@@ -1,6 +1,7 @@
 version: '3.7'
 
 services:
+
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.16.2
     container_name: elasticsearch
@@ -12,7 +13,7 @@ services:
       - "9200:9200"
       - "9300:9300"
     volumes:
-      - ./esdata:/usr/share/elasticsearch/data
+      - /home/mesdra/Volumes:/usr/share/elasticsearch/data
     networks:
       - elastic
 
@@ -26,7 +27,6 @@ services:
       - ELASTICSEARCH_PASSWORD=${ELASTIC_PASS}
       - ELASTICSEARCH_USERNAME=elastic
       - xpack.security.enabled=true
- 
 
   extractor:
     build:
