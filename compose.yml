@@ -13,7 +13,7 @@ services:
       - "9200:9200"
       - "9300:9300"
     volumes:
-      - /home/mesdra/Volumes/:/usr/share/elasticsearch/data
+      - ${VOLUME_DIR}:/usr/share/elasticsearch/data
     networks:
       - elastic
 
