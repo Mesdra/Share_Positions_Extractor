@@ -13,12 +13,13 @@ services:
       - "9200:9200"
       - "9300:9300"
     volumes:
-      - /home/mesdra/Volumes:/usr/share/elasticsearch/data
+      - /home/mesdra/Volumes/:/usr/share/elasticsearch/data
     networks:
       - elastic
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.16.2
+    container_name: kibana
     ports:
       - "5601:5601"
     restart: always
@@ -32,15 +33,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: extractor_job
     restart: always
     depends_on:
       - elasticsearch
     networks:
       - elastic
-
-volumes:
-  esdata:
-    driver: local
 
 networks:
   elastic:
