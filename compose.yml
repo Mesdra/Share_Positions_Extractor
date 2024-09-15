@@ -23,10 +23,12 @@ services:
       - "5601:5601"
     restart: always
     environment:
-      - ELASTICSEARCH_URL="http://elasticsearch:9200"
+      - ELASTICSEARCH_URL="http://elasticsearchfff:9200"
       - ELASTICSEARCH_PASSWORD=${ELASTIC_PASS}
       - ELASTICSEARCH_USERNAME=elastic
       - xpack.security.enabled=true
+    networks:
+      - elastic
 
   extractor:
     build:
@@ -34,6 +36,7 @@ services:
       dockerfile: Dockerfile
     container_name: extractor_job
     environment:
+      - ELASTICSEARCH_USERNAME=mesdra
       - ELASTIC_PASSWORD=${ELASTIC_PASS}
     restart: always
     depends_on:
