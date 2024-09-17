@@ -13,6 +13,8 @@ ADD test.html /app/test.html
 RUN apt-get update && apt-get -y install cron
 ADD crontabconfig /etc/cron.d/simple-cron
 RUN chmod 0644 /etc/cron.d/simple-cron
+RUN chmod 755 /app/
 RUN crontab /etc/cron.d/simple-cron
 RUN touch /var/log/cron.log
+RUN chmod 755 /var/log/cron.log
 CMD (cron -f &) && tail -f /var/log/cron.log
