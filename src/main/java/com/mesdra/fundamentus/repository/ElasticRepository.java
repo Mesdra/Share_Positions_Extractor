@@ -1,6 +1,8 @@
 package com.mesdra.fundamentus.repository;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Properties;
 
@@ -18,6 +20,8 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.mesdra.fundamentus.config.PropertiesLoader;
 import com.mesdra.fundamentus.exception.PropertiesException;
 import com.mesdra.fundamentus.model.SharePosition;
@@ -28,10 +32,16 @@ public class ElasticRepository {
         try {
             RestHighLevelClient client = createClient();
 
-            for (SharePosition sharePosition : positions) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JavaTimeModule module = new JavaTimeModule();
 
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            module.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(formatter));
+            objectMapper.registerModule(module);
+
+            for (SharePosition sharePosition : positions) {
                 IndexRequest indexRequest = new IndexRequest("shareposition");
-                indexRequest.source(new ObjectMapper().writeValueAsString(sharePosition),
+                indexRequest.source(objectMapper.writeValueAsString(sharePosition),
                         XContentType.JSON);
                 client.index(indexRequest, RequestOptions.DEFAULT);
 
