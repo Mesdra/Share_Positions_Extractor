@@ -31,8 +31,10 @@ public class ExtractDataService {
 
         } catch (PropertiesException e) {
             log.error("Error to load properties {} , with filename {}", e.getMessage(), e.getPropertieFileName());
+            System.exit(1);
         } catch (DataException e) {
             log.error("Error in the process {} ", e.getMessage());
+            System.exit(1);
         }
 
     }

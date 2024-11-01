@@ -9,5 +9,6 @@ public class Main {
 
         ExtractDataService ex = new ExtractDataService();
         ex.extract();
+        System.exit(0);
     }
 }

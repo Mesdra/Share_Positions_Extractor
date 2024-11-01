@@ -26,29 +26,50 @@ import com.mesdra.fundamentus.config.PropertiesLoader;
 import com.mesdra.fundamentus.exception.PropertiesException;
 import com.mesdra.fundamentus.model.SharePosition;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ElasticRepository {
 
     public void save(List<SharePosition> positions) throws PropertiesException {
-        try {
-            RestHighLevelClient client = createClient();
+        var attempt = 1;
+        var limitRetry = 2;
 
-            ObjectMapper objectMapper = new ObjectMapper();
-            JavaTimeModule module = new JavaTimeModule();
+        while (true) {
+            log.info("Attempt {} to insert data on Elastic.", attempt);
+            try {
+                RestHighLevelClient client = createClient();
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            module.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(formatter));
-            objectMapper.registerModule(module);
+                ObjectMapper objectMapper = new ObjectMapper();
+                JavaTimeModule module = new JavaTimeModule();
 
-            for (SharePosition sharePosition : positions) {
-                IndexRequest indexRequest = new IndexRequest("shareposition");
-                indexRequest.source(objectMapper.writeValueAsString(sharePosition),
-                        XContentType.JSON);
-                client.index(indexRequest, RequestOptions.DEFAULT);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                module.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(formatter));
+                objectMapper.registerModule(module);
 
+                for (SharePosition sharePosition : positions) {
+                    IndexRequest indexRequest = new IndexRequest("shareposition");
+                    indexRequest.source(objectMapper.writeValueAsString(sharePosition),
+                            XContentType.JSON);
+                    client.index(indexRequest, RequestOptions.DEFAULT);
+
+                }
+                client.close();
+                log.info("Insert finished");
+                return;
+            } catch (IOException e) {
+                log.info("Fail : {}",e.getMessage());
+                if (attempt >= limitRetry) {
+                    log.info("Finish Retry with error");
+                    throw new PropertiesException("Erro to insert message " + e.getMessage(), "");
+                }
+                attempt++;
+                try {
+                    Thread.sleep(10000); // 10 seconds
+                } catch (InterruptedException d) {
+                    throw new PropertiesException("Erro to insert message " + e.getMessage(), "");
+                }
             }
-            client.close();
-        } catch (IOException e) {
-            throw new PropertiesException("Erro inserir mensagem " + e.getMessage(), "");
         }
 
     }
@@ -59,7 +80,7 @@ public class ElasticRepository {
         String host = conf.getProperty("elastic.host");
         String port = conf.getProperty("elastic.port");
         String user = conf.getProperty("elastic.user");
-        String pass = System.getenv("ELASTIC_PASSWORD");
+        String pass = "elasticmesdra";
 
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(AuthScope.ANY,
