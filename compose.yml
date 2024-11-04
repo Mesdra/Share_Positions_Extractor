@@ -67,10 +67,7 @@ services:
       - xpack.security.enabled=true
     networks:
       - elastic
-    depends_on:
-      - es01
-      - es02
-      - es03
+    depends_on: {"es01": {"condition": "service_healthy"},"es02": {"condition": "service_healthy"},"es03": {"condition": "service_healthy"}}
 
   extractor:
     build:
@@ -81,10 +78,7 @@ services:
       - ELASTICSEARCH_USERNAME=mesdra
       - ELASTIC_PASSWORD=${ELASTIC_PASS}
       - ELASTICSEARCH_HOST=http://es01:9200
-    depends_on:
-      - es01
-      - es02
-      - es03
+    depends_on: {"es01": {"condition": "service_healthy"},"es02": {"condition": "service_healthy"},"es03": {"condition": "service_healthy"}}
     networks:
       - elastic
 
