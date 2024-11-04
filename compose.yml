@@ -2,18 +2,53 @@ version: '3.7'
 
 services:
 
-  elasticsearch:
+  es01:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.16.2
-    container_name: elasticsearch
+    container_name: es01
     environment:
-      - discovery.type=single-node
+      - cluster.name=es-docker-cluster
+      - node.name=es01
+      - discovery.seed_hosts=es02,es03
+      - cluster.initial_master_nodes=es01,es02,es03
       - xpack.security.enabled=true
+      - xpack.security.transport.ssl.enabled=false
       - ELASTIC_PASSWORD=${ELASTIC_PASS}
     ports:
       - "9200:9200"
-      - "9300:9300"
     volumes:
-      - ${VOLUME_DIR}:/usr/share/elasticsearch/data
+      - ${VOLUME_DIR}/es01:/usr/share/elasticsearch/data
+    networks:
+      - elastic
+
+  es02:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.16.2
+    container_name: es02
+    environment:
+      - cluster.name=es-docker-cluster
+      - node.name=es02
+      - discovery.seed_hosts=es01,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - xpack.security.enabled=true
+      - xpack.security.transport.ssl.enabled=false
+      - ELASTIC_PASSWORD=${ELASTIC_PASS}
+    volumes:
+      - ${VOLUME_DIR}/es02:/usr/share/elasticsearch/data
+    networks:
+      - elastic
+
+  es03:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.16.2
+    container_name: es03
+    environment:
+      - cluster.name=es-docker-cluster
+      - node.name=es03
+      - discovery.seed_hosts=es01,es02
+      - cluster.initial_master_nodes=es01,es02,es03
+      - xpack.security.enabled=true
+      - xpack.security.transport.ssl.enabled=false
+      - ELASTIC_PASSWORD=${ELASTIC_PASS}
+    volumes:
+      - ${VOLUME_DIR}/es03:/usr/share/elasticsearch/data
     networks:
       - elastic
 
@@ -23,12 +58,16 @@ services:
     ports:
       - "5601:5601"
     environment:
-      - ELASTICSEARCH_URL="http://elasticsearchfff:9200"
+      - ELASTICSEARCH_HOSTS=http://es01:9200,http://es02:9200,http://es03:9200
       - ELASTICSEARCH_PASSWORD=${ELASTIC_PASS}
       - ELASTICSEARCH_USERNAME=elastic
       - xpack.security.enabled=true
     networks:
       - elastic
+    depends_on:
+      - es01
+      - es02
+      - es03
 
   extractor:
     build:
@@ -38,8 +77,11 @@ services:
     environment:
       - ELASTICSEARCH_USERNAME=mesdra
       - ELASTIC_PASSWORD=${ELASTIC_PASS}
+      - ELASTICSEARCH_HOST=http://es01:9200
     depends_on:
-      - elasticsearch
+      - es01
+      - es02
+      - es03
     networks:
       - elastic
 
