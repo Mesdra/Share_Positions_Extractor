@@ -13,6 +13,7 @@ services:
       - xpack.security.enabled=true
       - xpack.security.transport.ssl.enabled=false
       - ELASTIC_PASSWORD=${ELASTIC_PASS}
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ports:
       - "9200:9200"
     volumes:
@@ -31,6 +32,7 @@ services:
       - xpack.security.enabled=true
       - xpack.security.transport.ssl.enabled=false
       - ELASTIC_PASSWORD=${ELASTIC_PASS}
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     volumes:
       - ${VOLUME_DIR}/es02:/usr/share/elasticsearch/data
     networks:
@@ -47,6 +49,7 @@ services:
       - xpack.security.enabled=true
       - xpack.security.transport.ssl.enabled=false
       - ELASTIC_PASSWORD=${ELASTIC_PASS}
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     volumes:
       - ${VOLUME_DIR}/es03:/usr/share/elasticsearch/data
     networks:
