@@ -11,7 +11,7 @@ services:
       - discovery.seed_hosts=es02,es03
       - cluster.initial_master_nodes=es01,es02,es03
       - xpack.security.enabled=true
-      - xpack.security.transport.ssl.enabled=false
+      - xpack.security.transport.ssl.enabled=true
       - ELASTIC_PASSWORD=${ELASTIC_PASS}
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ports:
@@ -35,7 +35,7 @@ services:
       - discovery.seed_hosts=es01,es03
       - cluster.initial_master_nodes=es01,es02,es03
       - xpack.security.enabled=true
-      - xpack.security.transport.ssl.enabled=false
+      - xpack.security.transport.ssl.enabled=true
       - ELASTIC_PASSWORD=${ELASTIC_PASS}
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     volumes:
@@ -57,7 +57,7 @@ services:
       - discovery.seed_hosts=es01,es02
       - cluster.initial_master_nodes=es01,es02,es03
       - xpack.security.enabled=true
-      - xpack.security.transport.ssl.enabled=false
+      - xpack.security.transport.ssl.enabled=true
       - ELASTIC_PASSWORD=${ELASTIC_PASS}
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     volumes:
